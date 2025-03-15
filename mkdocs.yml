@@ -1,7 +1,13 @@
 site_name: KAMISHIBAI
-site_url: https://mydomain.org/mysite
+site_url: https://purple-ocean-0e8c70a00.6.azurestaticapps.net/
 use_directory_urls: false
 theme:
   name: material
   features:
     - navigation.prune
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - awesome-pages
