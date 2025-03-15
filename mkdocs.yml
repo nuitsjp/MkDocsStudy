@@ -15,6 +15,9 @@ extra_css:
 plugins:
   - awesome-pages
   - search:
+      prebuild_index: true  # 事前ビルドによる高速化
+      min_search_length: 2  # 最小検索文字数を2文字に設定
       lang: ja
       separator: '[\s\-,:!=\[\]()"/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
-      indexing: 'full'
+      indexing: 'sections'  # セクション単位のインデックス作成
+      search_index_only: false  # 完全なテキストも保存
