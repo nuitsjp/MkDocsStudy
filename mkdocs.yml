@@ -1,0 +1,14 @@
+site_name: KAMISHIBAI
+site_url: https://mydomain.org/mysite
+use_directory_urls: false
+theme:
+  name: material
+  features:
+    - navigation.prune
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - search
+  - awesome-pages
