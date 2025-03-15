@@ -5,9 +5,16 @@ theme:
   name: material
   features:
     - navigation.prune
+    - search.highlight
+    - search.share
+    - search.suggest
 
 extra_css:
   - stylesheets/extra.css
 
 plugins:
   - awesome-pages
+  - search:
+      lang: ja
+      separator: '[\s\-,:!=\[\]()"/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+      indexing: 'full'
