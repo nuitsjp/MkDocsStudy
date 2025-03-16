@@ -11,6 +11,10 @@ on:
     branches:
       - main  # mainブランチに対するPRの場合に実行
 
+permissions:
+  contents: read
+  pull-requests: write  # PRへのコメント権限を追加
+
 # 実行するジョブを定義
 jobs:
   # ビルドとデプロイを行うジョブ
