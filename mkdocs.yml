@@ -1,23 +1,34 @@
-site_name: KAMISHIBAI
-site_url: https://purple-ocean-0e8c70a00.6.azurestaticapps.net/
-use_directory_urls: false
+# サイトの基本設定
+site_name: MkDocs Study                                     # サイトのタイトル（ブラウザのタブやヘッダーに表示される）
+site_url: https://purple-ocean-0e8c70a00.6.azurestaticapps.net/  # サイトのベースURL（SEOやリンク生成に使用される）
+use_directory_urls: false                                   # falseに設定すると、URLに.htmlを含める（trueだときれいなURLになるが、ローカル閲覧時に問題が生じることがある）
+
+# テーマの設定
 theme:
-  name: material
+  name: material                                            # Material for MkDocsテーマを使用
   features:
-    - navigation.prune
-    - search.highlight
-    - search.share
-    - search.suggest
+    - navigation.prune                                      # 現在のページに関連のないナビゲーション項目を非表示にし、サイドバーをすっきりさせる
+    - navigation.tracking                                   # 現在表示しているページに対応するナビゲーション項目を自動的にハイライト表示
+    - navigation.expand                                     # 現在のページの親セクションを自動的に展開して表示
+    - navigation.indexes                                    # セクション自体をクリック可能なインデックスページとして設定可能に
+    - navigation.top                                        # 長いページの下部に「トップへ戻る」ボタンを表示
+    - toc.follow                                            # スクロールに合わせて目次内の現在位置を自動的にハイライト
+    - search.highlight                                      # 検索結果内でキーワードをハイライト表示
+    - search.share                                          # 検索結果を共有するための機能を有効化（URLに検索クエリが含まれる）
+    - search.suggest                                        # 入力中に検索候補をリアルタイムで表示
 
+# 追加のCSSファイル
 extra_css:
-  - stylesheets/extra.css
+  - stylesheets/extra.css                                   # カスタムスタイルシートを適用（サイトの見た目をカスタマイズ）
 
+# プラグイン設定
 plugins:
-  - awesome-pages
-  - search:
-      prebuild_index: true  # 事前ビルドによる高速化
-      min_search_length: 2  # 最小検索文字数を2文字に設定
-      lang: ja
-      separator: '[\s\-,:!=\[\]()"/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
-      indexing: 'sections'  # セクション単位のインデックス作成
-      search_index_only: false  # 完全なテキストも保存
+  - awesome-pages                                           # ナビゲーション構造をカスタマイズするプラグイン（.pages ファイルで制御可能）
+  - search:                                                 # 検索機能の設定
+      lang: ja                                              # 日本語検索に最適化（日本語のトークン化処理を適用）
+      separator: '[\s\-,:!=\[\]()"/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'  # 検索インデックス作成時のトークン分割パターン（技術文書に適した詳細な正規表現）
+      indexing: 'sections'                                  # セクション単位でインデックス化（見出しごとに分割して検索結果を表示）
+      prebuild_index: true                                  # ビルド時にインデックスを事前生成（初回検索の読み込み時間を短縮）
+      min_search_length: 2                                  # 検索を開始する最小文字数を2文字に設定（日本語の場合に適切）
+      search_index_only: false                              # 完全なテキストも保存し、検索結果表示を改善
+      rel_url_fallback: true                                # 相対URLを使用し、サイト移動時も検索が機能するように
