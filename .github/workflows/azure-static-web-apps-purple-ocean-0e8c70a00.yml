@@ -1,67 +1,77 @@
+# ワークフローの名前（GitHub Actionsダッシュボードに表示される）
 name: Azure Static Web Apps CI/CD
 
+# このワークフローがいつ実行されるかを定義
 on:
   push:
     branches:
-      - main
+      - main  # mainブランチへのプッシュ時に実行
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    types: [opened, synchronize, reopened, closed]  # PR作成・更新・再オープン・クローズ時に実行
     branches:
-      - main
+      - main  # mainブランチに対するPRの場合に実行
 
+# 実行するジョブを定義
 jobs:
+  # ビルドとデプロイを行うジョブ
   build_and_deploy_job:
+    # このジョブを実行する条件：pushイベント、またはPRがクローズ以外のアクション時
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
-    runs-on: ubuntu-latest
-    name: Build and Deploy Job
+    runs-on: ubuntu-latest  # Ubuntu最新バージョンの仮想環境で実行
+    name: Build and Deploy Job  # ジョブの表示名
     steps:
-      - uses: actions/checkout@v3
+      # ステップ1: リポジトリのコードをチェックアウト
+      - uses: actions/checkout@v3  # GitHubのチェックアウトアクションv3を使用
         with:
-          submodules: true
-          lfs: false
+          submodules: true  # サブモジュールも含めてチェックアウト（必要な場合）
+          lfs: false  # Git LFS（Large File Storage）は使用しない
           
-      # Python環境のセットアップを追加
+      # ステップ2: Pythonの実行環境をセットアップ
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v4  # Python環境セットアップアクションv4を使用
         with:
-          python-version: '3.x'
+          python-version: '3.x'  # 最新の安定版Python 3系を使用
           
-      # MkDocsと必要なパッケージをインストール（awesome-pagesプラグインを追加）
+      # ステップ3: MkDocsと必要なプラグイン・拡張機能をインストール
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install mkdocs-material
-          pip install mkdocs
-          pip install mkdocs-awesome-pages-plugin
-          pip install pymdown-extensions          
+          python -m pip install --upgrade pip  # pipを最新バージョンにアップグレード
+          pip install mkdocs-material  # Material for MkDocsテーマをインストール
+          pip install mkdocs  # MkDocs本体をインストール
+          pip install mkdocs-awesome-pages-plugin  # ナビゲーション構造のカスタマイズ用プラグイン
+          pip install pymdown-extensions  # Markdown拡張機能（コードハイライト、タブなど）をインストール
           
-      # MkDocsサイトをビルド
+      # ステップ4: MkDocsでサイトをビルド
       - name: Build MkDocs site
-        run: mkdocs build
+        run: mkdocs build  # mkdocs.ymlの設定に基づいてサイトを生成（デフォルトでは/siteディレクトリに出力）
         
+      # ステップ5: ビルドしたサイトをAzure Static Web Appsにデプロイ
       - name: Build And Deploy
-        id: builddeploy
-        uses: Azure/static-web-apps-deploy@v1
+        id: builddeploy  # このステップのID（後続のステップから参照可能）
+        uses: Azure/static-web-apps-deploy@v1  # Azure Static Web Appsデプロイアクションv1を使用
         with:
+          # Azure Static Web Appsのデプロイトークン（GitHubシークレットから取得）
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PURPLE_OCEAN_0E8C70A00 }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
-          action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/site" # ビルド後のサイトディレクトリに変更
-          api_location: "" # Api source code path - optional
-          output_location: "" # ビルド済みのため空に設定
-          skip_app_build: true # 既にビルド済みのため、再ビルドをスキップ
-          ###### End of Repository/Build Configurations ######
+          repo_token: ${{ secrets.GITHUB_TOKEN }}  # GitHub APIトークン（PR連携など用、自動設定）
+          action: "upload"  # 実行するアクション（uploadはコンテンツをデプロイ）
+          
+          # アプリケーション設定（Azure Static Web Appsのビルド設定）
+          app_location: "/site"  # MkDocsがビルドした静的サイトのディレクトリパス
+          api_location: ""  # APIのソースディレクトリ（使用しない場合は空）
+          output_location: ""  # ビルド出力先（既にビルド済みのため空に設定）
+          skip_app_build: true  # MkDocsで既にビルド済みのため、Azure側でのビルドプロセスをスキップ
 
+  # プルリクエストがクローズされたときに実行するジョブ
   close_pull_request_job:
+    # このジョブを実行する条件：PRがクローズされた場合のみ
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    name: Close Pull Request Job
+    runs-on: ubuntu-latest  # Ubuntu最新バージョンの仮想環境で実行
+    name: Close Pull Request Job  # ジョブの表示名
     steps:
+      # PRに関連するステージング環境を削除するステップ
       - name: Close Pull Request
-        id: closepullrequest
-        uses: Azure/static-web-apps-deploy@v1
+        id: closepullrequest  # このステップのID
+        uses: Azure/static-web-apps-deploy@v1  # Azure Static Web Appsデプロイアクションv1を使用
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PURPLE_OCEAN_0E8C70A00 }}
-          action: "close"
+          action: "close"  # クローズアクション（PRに関連するステージング環境を削除）
