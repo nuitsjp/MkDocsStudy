@@ -49,11 +49,12 @@ jobs:
       - name: First MkDocs Build
         run: mkdocs build  # mkdocs.ymlの設定に基づいてサイトを生成（デフォルトでは/siteディレクトリに出力）
         
-      # ステップ5: docs\画面遷移 フォルダを削除
-      - name: Remove docs\画面遷移 folder
+      # ステップ5: docs\画面遷移 フォルダとdocs\.pages ファイルを削除
+      - name: Remove docs\画面遷移 folder and docs\.pages file
         run: |
           rm -rf "docs/画面遷移"
-          echo "「docs/画面遷移」フォルダを削除しました"
+          rm -f "docs/.pages"
+          echo "「docs/画面遷移」フォルダと「docs/.pages」ファイルを削除しました"
           
       # ステップ6: site-exportフォルダへの2回目のビルド
       - name: Second MkDocs Build to site-export
