@@ -45,11 +45,41 @@ jobs:
           pip install mkdocs-awesome-pages-plugin  # ナビゲーション構造のカスタマイズ用プラグイン
           pip install pymdown-extensions  # Markdown拡張機能（コードハイライト、タブなど）をインストール
           
-      # ステップ4: MkDocsでサイトをビルド
-      - name: Build MkDocs site
+      # ステップ4: MkDocsでサイトを初回ビルド
+      - name: First MkDocs Build
         run: mkdocs build  # mkdocs.ymlの設定に基づいてサイトを生成（デフォルトでは/siteディレクトリに出力）
         
-      # ステップ5: ビルドしたサイトをAzure Static Web Appsにデプロイ
+      # ステップ5: docs\画面遷移 フォルダを削除
+      - name: Remove docs\画面遷移 folder
+        run: |
+          rm -rf "docs/画面遷移"
+          echo "「docs/画面遷移」フォルダを削除しました"
+          
+      # ステップ6: site-exportフォルダへの2回目のビルド
+      - name: Second MkDocs Build to site-export
+        run: |
+          # site-exportという出力先を指定してビルド
+          mkdocs build -d site-export
+          echo "site-exportフォルダにビルドしました"
+          
+      # ステップ7: site-exportをZIP化してsiteフォルダにコピー
+      - name: Create ZIP and copy to site folder
+        run: |
+          # site-exportフォルダをZIP化
+          cd site-export
+          zip -r ../site-export.zip .
+          cd ..
+          
+          # siteフォルダにZIPファイルをコピー
+          mkdir -p site
+          cp site-export.zip site/
+          echo "site-exportフォルダをZIP化し、siteフォルダにコピーしました"
+          
+          # 確認のためにファイル一覧を表示
+          echo "site フォルダの内容:"
+          ls -la site/
+        
+      # ステップ8: ビルドしたサイトをAzure Static Web Appsにデプロイ
       - name: Build And Deploy
         id: builddeploy  # このステップのID（後続のステップから参照可能）
         uses: Azure/static-web-apps-deploy@v1  # Azure Static Web Appsデプロイアクションv1を使用
