@@ -32,3 +32,13 @@ plugins:
       min_search_length: 2                                  # 検索を開始する最小文字数を2文字に設定（日本語の場合に適切）
       search_index_only: false                              # 完全なテキストも保存し、検索結果表示を改善
       rel_url_fallback: true                                # 相対URLを使用し、サイト移動時も検索が機能するように
+  - mermaid2:                                               # Mermaid.jsダイアグラムのレンダリング
+      arguments:
+        theme: default                                      # Mermaidテーマ（default, forest, dark, neutral）
+  - to-pdf:                                                 # PDF出力機能
+      author: MkDocs Study                                  # PDFのメタデータに含まれる作成者名
+      copyright: 2024 MkDocs Study                          # PDFの著作権情報
+      cover: true                                           # 表紙ページを生成
+      cover_title: MkDocs Study                             # 表紙のタイトル
+      cover_subtitle: 日本語ドキュメント＆Mermaidダイアグラム対応    # 表紙のサブタイトル
+      output_path: MkDocsStudy.pdf                          # PDF出力先パス
