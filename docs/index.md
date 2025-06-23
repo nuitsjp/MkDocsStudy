@@ -1,7 +1,5 @@
 # はじめに
 
-- [アーカイブ](site-export.zip)
-
 KAMISHIBAIは、Generic Host上でMVVMパターンをサポートするWPF用の画面遷移ライブラリです。ViewModelのコンストラクターに引数を宣言することで、専用の画面遷移メソッドをコード生成します。
 
 画面遷移時にstringをわたす場合、つぎのようにViewModelを定義します。
