@@ -27,18 +27,15 @@ plugins:
   - search:                                                 # 検索機能の設定
       lang: ja                                              # 日本語検索に最適化（日本語のトークン化処理を適用）
       separator: '[\s\-,:!=\[\]()"/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'  # 検索インデックス作成時のトークン分割パターン（技術文書に適した詳細な正規表現）
-      indexing: 'sections'                                  # セクション単位でインデックス化（見出しごとに分割して検索結果を表示）
-      prebuild_index: true                                  # ビルド時にインデックスを事前生成（初回検索の読み込み時間を短縮）
-      min_search_length: 2                                  # 検索を開始する最小文字数を2文字に設定（日本語の場合に適切）
-      search_index_only: false                              # 完全なテキストも保存し、検索結果表示を改善
-      rel_url_fallback: true                                # 相対URLを使用し、サイト移動時も検索が機能するように
   - mermaid2:                                               # Mermaid.jsダイアグラムのレンダリング
       arguments:
         theme: default                                      # Mermaidテーマ（default, forest, dark, neutral）
-  - to-pdf:                                                 # PDF出力機能
+  - to-pdf:                                                 # PDF出力機能（Mermaid対応版）
       author: MkDocs Study                                  # PDFのメタデータに含まれる作成者名
       copyright: 2024 MkDocs Study                          # PDFの著作権情報
       cover: true                                           # 表紙ページを生成
       cover_title: MkDocs Study                             # 表紙のタイトル
       cover_subtitle: 日本語ドキュメント＆Mermaidダイアグラム対応    # 表紙のサブタイトル
-      output_path: MkDocsStudy.pdf                          # PDF出力先パス
+      output_path: MkDocsStudy-with-pdf.pdf                 # PDF出力先パス
+      render_js: true                                       # JavaScriptレンダリングを有効化（Mermaid対応）
+      headless_chrome_path: /usr/bin/google-chrome
