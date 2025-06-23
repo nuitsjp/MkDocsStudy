@@ -60,3 +60,16 @@ KAMISHIBAIを利用することで、もっとも効率よく、安全にMVVMパ
 画面遷移にはKAMISHIBAIを利用してください。
 
 では実際にKAMISHIBAIを利用してみましょう！
+
+---
+
+## 画面遷移のイメージ（Mermaidダイアグラム例）
+
+```mermaid
+flowchart LR
+    A[開始画面<br>（MainView）] -->|「次へ」ボタン| B[次の画面<br>（FirstView）]
+    B -->|「完了」| C[完了画面<br>（CompleteView）]
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+```
